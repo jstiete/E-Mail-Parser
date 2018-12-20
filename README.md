@@ -3,10 +3,10 @@ The parser saves e-mail attachments automatically and handles different self-def
 It works with IMAP servers.
 
 ### Table of Contents
-**[Features](#Features)**
-**[How it works](#How-it-works)**
-**[Configuration of the parser](#Configuration-of-the-parser)**
-**[Examples](#Examples)**
+**[Features](#Features)**<br>
+**[How it works](#How-it-works)**<br>
+**[Configuration of the parser](#Configuration-of-the-parser)**<br>
+**[Examples](#Examples)**<br>
 **[License](#License)**
  
 # Features
