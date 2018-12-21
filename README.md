@@ -3,11 +3,12 @@ The parser saves e-mail attachments automatically and handles different self-def
 It works with IMAP servers.
 
 ### Table of Contents
-**[Features](#Features)**<br>
-**[How it works](#How-it-works)**<br>
-**[Configuration of the parser](#Configuration-of-the-parser)**<br>
-**[Examples](#Examples)**<br>
-**[License](#License)**
+* **[Features](#Features)**<br>
+* **[How it works](#How-it-works)**<br>
+* **[Configuration of the parser](#Configuration-of-the-parser)**<br>
+* **[Easy start with generated Test Mails](#Easy-start-with-generated-Test-Mails)**<br>
+* **[More Examples](#More-Examples)**<br>
+* **[License](#License)**
  
 # Features
 * save e-mail attachments automatically
@@ -82,11 +83,13 @@ Known variables are:
 #### Keywords
 The keywords are defined in the `category` or `keys` option of each datatype.
 **Required options for keys:**
+
 | Option | Type   | Description                                                                |
 |--------|--------|----------------------------------------------------------------------------|
 | name   | String | Identifier in the e-mail.  <br/>(Refer to example configuration below: You can set the *$(Alternate_Title)* variable by writing '*Title=MyValue*' in your e-mail.)|
 
 **Optional options for keys:**
+
 | Option | Type   | Description                                                                |
 |--------|------- |----------------------------------------------------------------------------|
 | default        | String | Default value, if no other value is given in e-mail or read from metadata.|
@@ -96,6 +99,7 @@ The keywords are defined in the `category` or `keys` option of each datatype.
 | RegExprPattern | String | optional regular expression for masking the read metadata <br/>e.g., search for '2017' in CreationDate '2017:12:24 18:00:00'|
 
 **Additional options for category keys:**
+
 | Option | Type   | Description                                                                |
 |--------|--------|----------------------------------------------------------------------------|
 | categoryroot       | String  | Root directory of the category tree. |
@@ -150,8 +154,11 @@ name =
 [Key2]
 ...
 ```
+# Easy start with generated Test Mails
+Clone the repository and run the script from `generateTestmails.py` from `Testprogramme/E-Mail/` this will create different E-mails with photos.
+Copy this mails to `Parser/InputData/` and run the `MailParser.py` script. You do not need to change the configuration etc. It should work out of the box and moves the images from the e-mails to the output folder.
 
-# Examples
+# More Examples
 The examples refer to the configuration file below and the above mentioned category tree
 
 ### Save your vacation photos
