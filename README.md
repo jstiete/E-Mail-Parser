@@ -156,7 +156,7 @@ name =
 ```
 # Easy start with generated Test Mails
 Clone the repository and run the script from `generateTestmails.py` from `Testprogramme/E-Mail/` this will create different E-mails with photos.
-Copy this mails to `Parser/InputData/` and run the `MailParser.py` script. You do not need to change the configuration etc. It should work out of the box and moves the images from the e-mails to the output folder.
+Copy this mails to `Parser/InputData/` and run the `MailParser.py` script. You do not need to change the configuration etc. It should work out of the box and moves the images from the e-mails to the output folder. To get full function range you need to install Exiftool and pyexiftool (see [license](#License)).
 
 # More Examples
 The examples refer to the configuration file below and the above mentioned category tree
