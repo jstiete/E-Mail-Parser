@@ -324,67 +324,73 @@ def check_ReadMetadata(dataType, dataTypes, keyWords):
 def read_metadata(filename, dataType, dataTypes, keyWords, config):
 	import logging
 	import re
-	import exiftool
-	exiftoolPath = None
-	if(config.has_option("General", "exiftoolPath") and (config.get("General", "exiftoolPath") != "")):
-		exiftoolPath = config.get("General", "exiftoolPath")
-	with exiftool.ExifTool(exiftoolPath) as et:
-		for key in dataTypes[dataType]["keys"]:
-			if(keyWords[key]["readMetadata"] == []):
-				continue
-			regExpr=keyWords[key]["RegExprPattern"]
-			tags=keyWords[key]["readMetadata"]
-			for tag in tags:
-				logging.debug("Read Tag %s: execute: et.get_tag(\'-%s\', \'%s\')" %(tag, tag, filename))
-				value=et.get_tag(tag, filename)
-				if(value == None):
-					logging.debug("Tag was empty")
+	try:
+		import exiftool
+		exiftoolPath = None
+		if(config.has_option("General", "exiftoolPath") and (config.get("General", "exiftoolPath") != "")):
+			exiftoolPath = config.get("General", "exiftoolPath")
+		with exiftool.ExifTool(exiftoolPath) as et:
+			for key in dataTypes[dataType]["keys"]:
+				if(keyWords[key]["readMetadata"] == []):
 					continue
-				logging.info("Tag value is: %s" %value)
-				if(regExpr != None):
-					value = re.search(regExpr, value)
-					value = value.group(0)
-					logging.debug("Executing regular expression \'%s\' results: %s" %(regExpr, value))
-				if(value != None):
-					value = remove_forbidden_characters(value)
-					keyWords[key]["value"]=value
-					logging.info("Reading metadata \'%s\' = %s" %(keyWords[key]["name"], value))
-					break
+				regExpr=keyWords[key]["RegExprPattern"]
+				tags=keyWords[key]["readMetadata"]
+				for tag in tags:
+					logging.debug("Read Tag %s: execute: et.get_tag(\'-%s\', \'%s\')" %(tag, tag, filename))
+					value=et.get_tag(tag, filename)
+					if(value == None):
+						logging.debug("Tag was empty")
+						continue
+					logging.info("Tag value is: %s" %value)
+					if(regExpr != None):
+						value = re.search(regExpr, value)
+						value = value.group(0)
+						logging.debug("Executing regular expression \'%s\' results: %s" %(regExpr, value))
+					if(value != None):
+						value = remove_forbidden_characters(value)
+						keyWords[key]["value"]=value
+						logging.info("Reading metadata \'%s\' = %s" %(keyWords[key]["name"], value))
+						break
+	except:
+		logging.error("Error while reading metadata with exiftool", exc_info=True)
 
 
 # write keyword values to metadata of file "filename"
 def write_metadata(filename, datatype, dataTypes, keyWords, config):
 	import logging
 	import re
-	import exiftool
-	exiftoolPath = None
-	if(config.has_option("General", "exiftoolPath") and (config.get("General", "exiftoolPath") != "")):
-		exiftoolPath = config.get("General", "exiftoolPath")
 	missingKeys=[]
-	with exiftool.ExifTool(exiftoolPath) as et:
-		for key in dataTypes[datatype]["keys"]:
-			value = keyWords[key]["value"]
-			if(keyWords[key]["writeMetadata"] == [] and keyWords[key]["appendMetadata"] == []):
-				continue
-			logging.info("Processing Key: %s: AppendMetadata: %s; WriteMetadata: %s, Value: %s" %(key, keyWords[key]["appendMetadata"], str(keyWords[key]["writeMetadata"]), str(value)))		
-			if (value == None):
-				missingKeys.append(key)
-				logging.info("Can't write/append metadata for key %s (name=%s). Missing value(s)" %(key, keyWords[key]["name"]))
-				continue
-			elif(re.search("\$\(\w+\)", value) != None):
-				retval, value = replace_variable_by_value(value, keyWords)
-				if(retval != []):
-					missingKeys += retval
-					logging.info("Can't substitute variable to write/append metadata for key %s. Missing value(s): %s" %(key, retval))
+	try:
+		import exiftool
+		exiftoolPath = None
+		if(config.has_option("General", "exiftoolPath") and (config.get("General", "exiftoolPath") != "")):
+			exiftoolPath = config.get("General", "exiftoolPath")
+		with exiftool.ExifTool(exiftoolPath) as et:
+			for key in dataTypes[datatype]["keys"]:
+				value = keyWords[key]["value"]
+				if(keyWords[key]["writeMetadata"] == [] and keyWords[key]["appendMetadata"] == []):
 					continue
-			for meta in keyWords[key]["writeMetadata"]:
-				command=("-"+meta+"="+value).encode()
-				logging.info("Write metadata. Execute et.execute(\'%s\', b\'-m\', b\'-overwrite_original\', \'%s\')" %(command, filename))
-				et.execute(command, b"-m", b"-overwrite_original", filename.encode())
-			for meta in keyWords[key]["appendMetadata"]:
-				command=("-"+meta+"<$"+meta+" "+value).encode()
-				logging.info("Append metadata. Execute et.execute(\'%s\', b\'-m\', b\'-overwrite_original\', \'%s\')" %(command, filename))
-				et.execute(command, b"-m", b"-overwrite_original", filename.encode())
+				logging.info("Processing Key: %s: AppendMetadata: %s; WriteMetadata: %s, Value: %s" %(key, keyWords[key]["appendMetadata"], str(keyWords[key]["writeMetadata"]), str(value)))		
+				if (value == None):
+					missingKeys.append(key)
+					logging.info("Can't write/append metadata for key %s (name=%s). Missing value(s)" %(key, keyWords[key]["name"]))
+					continue
+				elif(re.search("\$\(\w+\)", value) != None):
+					retval, value = replace_variable_by_value(value, keyWords)
+					if(retval != []):
+						missingKeys += retval
+						logging.info("Can't substitute variable to write/append metadata for key %s. Missing value(s): %s" %(key, retval))
+						continue
+				for meta in keyWords[key]["writeMetadata"]:
+					command=("-"+meta+"="+value).encode()
+					logging.info("Write metadata. Execute et.execute(\'%s\', b\'-m\', b\'-overwrite_original\', \'%s\')" %(command, filename))
+					et.execute(command, b"-m", b"-overwrite_original", filename.encode())
+				for meta in keyWords[key]["appendMetadata"]:
+					command=("-"+meta+"<$"+meta+" "+value).encode()
+					logging.info("Append metadata. Execute et.execute(\'%s\', b\'-m\', b\'-overwrite_original\', \'%s\')" %(command, filename))
+					et.execute(command, b"-m", b"-overwrite_original", filename.encode())
+	except:
+		logging.error("Error while writing metadata with exiftool", exc_info=True)
 	return missingKeys
 
 
