@@ -103,7 +103,7 @@ if(config.get("General", "protocol").lower() == "imap"):
 
 	imapQuery = config.get("General", "imapquery")
 	result, uids = imapObj.uid('search', None, imapQuery)
-	logger,info("Search Mails. Result=\'%s\' Query=%s"%(result, imapQuery))
+	logger.info("Search Mails. Result=\'%s\' Query=%s" %(result, imapQuery))
 	if result != "OK":
 		logger.info("No unread messages found! Exit!")
 		imapObj.logout()
