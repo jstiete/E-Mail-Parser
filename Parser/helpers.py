@@ -215,12 +215,6 @@ def get_keywords_from_config(dataTypes, configFile):
 			else:
 				tempValue=None
 			subDict["value"]=tempValue
-#			if(configFile.has_option(key,"optional")):
-#				tempValue = configFile.getboolean(key, "optional")
-#				logging.debug("Keyword %s;\tOption %s=%r"%(key,"optional",tempValue))
-#			else:
-#				tempValue=False
-#			subDict["optional"]=tempValue
 			if(configFile.has_option(key,"appendMetadata")):
 				tempValue = configFile.get(key, "appendMetadata")
 				tempValue = re.split(",\s*", tempValue)
