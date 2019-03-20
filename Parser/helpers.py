@@ -63,6 +63,7 @@ def parse_text_for_keywords(message, keyDict):
 	import re
 	import logging
 	keyDictNames = [subdict["name"] for subdict in keyDict.values()]
+	keyDictNames = [names.lower() for names in keyDictNames]
 	keyDictKeys  = list(keyDict.keys())
 	aktKeys=[]
 	lastKind=""
@@ -79,8 +80,8 @@ def parse_text_for_keywords(message, keyDict):
 		value = matchObj.group(kind)
 		logging.debug("Text Parser found:\tKind: %s;\tValue: %s" %(kind, repr(value)))
 		if kind == 'ID':
-			if value in keyDictNames:
-				indices = [i for i,key in enumerate(keyDictNames) if key==value]
+			if value.lower() in keyDictNames:
+				indices = [i for i,key in enumerate(keyDictNames) if key==value.lower()]
 				for i in indices:
 					aktKeys.append(keyDictKeys[i])
 			elif lastKind == "ASSIGN" and aktKeys!=[]:
@@ -215,12 +216,6 @@ def get_keywords_from_config(dataTypes, configFile):
 			else:
 				tempValue=None
 			subDict["value"]=tempValue
-#			if(configFile.has_option(key,"optional")):
-#				tempValue = configFile.getboolean(key, "optional")
-#				logging.debug("Keyword %s;\tOption %s=%r"%(key,"optional",tempValue))
-#			else:
-#				tempValue=False
-#			subDict["optional"]=tempValue
 			if(configFile.has_option(key,"appendMetadata")):
 				tempValue = configFile.get(key, "appendMetadata")
 				tempValue = re.split(",\s*", tempValue)
