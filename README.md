@@ -5,8 +5,8 @@ It works with IMAP servers.
 ### Table of Contents
 * **[Features](#Features)**<br>
 * **[How it works](#How-it-works)**<br>
-* **[Configuration of the parser](#Configuration-of-the-parser)**<br>
 * **[Easy start with generated Test Mails](#Easy-start-with-generated-Test-Mails)**<br>
+* **[Configuration of the parser](#Configuration-of-the-parser)**<br>
 * **[More Examples](#More-Examples)**<br>
 * **[License](#License)**
  
@@ -42,6 +42,10 @@ be used as the value. If you want to use a value from metadata you can mask it w
 The priority for getting the keywords value is: default value, value from e-mail, metadata!
 (Default values are overwritten by e-mail or metadata).
 Have a look in the script files for more information.
+
+# Easy start with generated Test Mails
+Clone the repository and run the script from `generateTestmails.py` from `Testprogramme/E-Mail/` this will create different E-mails with photos.
+Copy this mails to `Parser/InputData/` and run the `MailParser.py` script. You do not need to change the configuration etc. It should work out of the box and moves the images from the e-mails to the output folder. To get full function range you need to install Exiftool and pyexiftool (see [license](#License)).
 
 # Configuration of the parser
 ## Define a Category Tree (if you want to use categories)
@@ -154,9 +158,6 @@ name =
 [Key2]
 ...
 ```
-# Easy start with generated Test Mails
-Clone the repository and run the script from `generateTestmails.py` from `Testprogramme/E-Mail/` this will create different E-mails with photos.
-Copy this mails to `Parser/InputData/` and run the `MailParser.py` script. You do not need to change the configuration etc. It should work out of the box and moves the images from the e-mails to the output folder. To get full function range you need to install Exiftool and pyexiftool (see [license](#License)).
 
 # More Examples
 The examples refer to the configuration file below and the above mentioned category tree
