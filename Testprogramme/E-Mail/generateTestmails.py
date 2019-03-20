@@ -87,7 +87,7 @@ if __name__ == '__main__':
 	subject='Re: UID incomplete_1: incomplete e-mail with one picture'
 	text=('Here are the missing keywords:\n'
               'Tag=Zebra\n'
-              'Autor=John\n')
+              'Author=John\n')
 	files=[]
 	content_types=[]
 	uid='incomplete_2'
