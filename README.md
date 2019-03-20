@@ -1,6 +1,7 @@
 # E-Mail Parser (Python)
 The parser saves e-mail attachments automatically and handles different self-defined datatypes (media, documents, etc. ).
 It works with IMAP servers.
+Requires min. Python 3.x
 
 ### Table of Contents
 * **[Features](#Features)**<br>
